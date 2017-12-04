@@ -68,8 +68,8 @@ public class TestControllerStock {
 
 			PreparedStatement stmt;
 			try {
-				stmt = conn.prepareStatement("UPDATE stockprice SET StockPrice=" + response.getStock_price()
-						+ " WHERE StockName='" + response.getCompany_Name() + "'");
+				stmt = conn.prepareStatement("UPDATE stockprice SET StockPrice=" + response.getstockPrice()
+						+ " WHERE StockName='" + response.getcompanyName() + "'");
 
 				int i = stmt.executeUpdate();
 				System.out.println(i + " records updated");
@@ -98,10 +98,10 @@ public class TestControllerStock {
 
 	private void postToCompany(ResponseUpgrade response) {
 		// First need to get instance of the company and den send the post accordingly
-		switch (response.getCompany_Name().toString()) {
+		switch (response.getcompanyName().toString()) {
 		case "companyA":
 			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getCompany_Name().toString());
+				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
 				ServiceInstance serviceInstance = instances.get(0);
 				String baseUrl = serviceInstance.getUri().toString();
 				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
@@ -113,7 +113,7 @@ public class TestControllerStock {
 			}
 		case "companyB":
 			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getCompany_Name().toString());
+				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
 				ServiceInstance serviceInstance = instances.get(0);
 				String baseUrl = serviceInstance.getUri().toString();
 				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
@@ -125,7 +125,7 @@ public class TestControllerStock {
 			}
 		case "companyC":
 			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getCompany_Name().toString());
+				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
 				ServiceInstance serviceInstance = instances.get(0);
 				String baseUrl = serviceInstance.getUri().toString();
 				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
@@ -137,7 +137,7 @@ public class TestControllerStock {
 			}
 		case "companyD":
 			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getCompany_Name().toString());
+				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
 				ServiceInstance serviceInstance = instances.get(0);
 				String baseUrl = serviceInstance.getUri().toString();
 				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);

@@ -1,39 +1,39 @@
 package com.javainuse.controllers;
 
 public class ResponseUpgrade {
-private double stock_price;
-private String Company_Name;
-private String Buyer;
-private String Seller;
-private int Number_of_shares;
-public double getStock_price() {
-	return stock_price;
+private double stockPrice;
+private String companyName;
+private String buyerName;
+private String sellerName;
+private int numberOfShares;
+public double getstockPrice() {
+	return stockPrice;
 }
-public void setStock_price(double stock_price) {
-	this.stock_price = stock_price;
+public void setstockPrice(double stockPrice) {
+	this.stockPrice = stockPrice;
 }
-public String getCompany_Name() {
-	return Company_Name;
+public String getcompanyName() {
+	return companyName;
 }
-public void setCompany_Name(String company_Name) {
-	Company_Name = company_Name;
+public void setcompanyName(String companyName) {
+	this.companyName = companyName;
 }
-public String getBuyer() {
-	return Buyer;
+public String getbuyerName() {
+	return buyerName;
 }
-public void setBuyer(String buyer) {
-	Buyer = buyer;
+public void setbuyerName(String buyerName) {
+	this.buyerName = buyerName;
 }
-public String getSeller() {
-	return Seller;
+public String getsellerName() {
+	return sellerName;
 }
-public void setSeller(String seller) {
-	Seller = seller;
+public void setsellerName(String sellerName) {
+	this.sellerName = sellerName;
 }
-public int getNumber_of_shares() {
-	return Number_of_shares;
+public int getnumberOfShares() {
+	return numberOfShares;
 }
-public void setNumber_of_shares(int number_of_shares) {
-	Number_of_shares = number_of_shares;
+public void setnumberOfShares(int numberOfShares) {
+	this.numberOfShares = numberOfShares;
 }
 }
