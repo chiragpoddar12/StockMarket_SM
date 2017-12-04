@@ -60,38 +60,41 @@ public class TestControllerStock {
 	}
 
 	@RequestMapping(value = "/stockMarket", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<ResponseUpgrade> update(@RequestBody ResponseUpgrade response) {
+	public ResponseEntity<ResponseUpgrade> update(@RequestBody ArrayList<ResponseUpgrade> response) {
 		if (response != null) {
-			System.out.println("Inhere");
-			jdbcConnection jdbc = new jdbcConnection();
-			Connection conn = jdbc.startConnection();
+			for(int i=0;i<response.size();i++) {
+				System.out.println("Inhere");
+				jdbcConnection jdbc = new jdbcConnection();
+				Connection conn = jdbc.startConnection();
 
-			PreparedStatement stmt;
-			try {
-				stmt = conn.prepareStatement("UPDATE stockprice SET StockPrice=" + response.getstockPrice()
-						+ " WHERE StockName='" + response.getcompanyName() + "'");
+				PreparedStatement stmt;
+				try {
+					stmt = conn.prepareStatement("UPDATE stockprice SET StockPrice=" + response.get(i).getstockPrice()
+							+ " WHERE StockName='" + response.get(i).getcompanyName() + "'");
 
-				int i = stmt.executeUpdate();
-				System.out.println(i + " records updated");
-			} catch (Exception e) {
-				System.out.println("No Such Company Found");
+					int j = stmt.executeUpdate();
+					System.out.println(j + " records updated");
+				} catch (Exception e) {
+					System.out.println("No Such Company Found");
+				}
+				try {
+
+					postToBank(response.get(i));
+
+				} catch (Exception e) {
+					System.out.println("Error in connection with bank");
+				}
+				try {
+
+					postToCompany(response.get(i));
+				} catch (Exception e) {
+					System.out.println("Error in connection with company");
+				}
 			}
-			try {
 
-				postToBank(response);
-
-			} catch (Exception e) {
-				System.out.println("Error in connection with bank");
-			}
-			try {
-
-				postToCompany(response);
-			} catch (Exception e) {
-				System.out.println("Error in connection with company");
-			}
 
 		}
-		return new ResponseEntity<ResponseUpgrade>(response, HttpStatus.OK);
+		return new ResponseEntity<ResponseUpgrade>(HttpStatus.OK);
 	}
 
 	private DiscoveryClient discoveryClient;
