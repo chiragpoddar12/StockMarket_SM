@@ -31,6 +31,8 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class TestControllerStock {
 
+	private DiscoveryClient discoveryClient;
+	
 	@RequestMapping(value = "/stockUpdates", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<List<String>> StockUpdates() throws JSONException {
 
@@ -85,8 +87,12 @@ public class TestControllerStock {
 					System.out.println("Error in connection with bank");
 				}
 				try {
-
-					postToCompany(response.get(i));
+					List<ServiceInstance> instances = discoveryClient.getInstances(response.get(i).getcompanyName().toString());
+					ServiceInstance serviceInstance = instances.get(0);
+					String baseUrl = serviceInstance.getUri().toString();
+					ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
+					//System.out.println(response1.getStatusCodeValue());
+					
 				} catch (Exception e) {
 					System.out.println("Error in connection with company");
 				}
@@ -96,31 +102,16 @@ public class TestControllerStock {
 		return new ResponseEntity<ResponseUpgrade>(HttpStatus.OK);
 	}
 
-	private DiscoveryClient discoveryClient;
+	
 
-	private void postToCompany(ResponseUpgrade response) {
+	/*private void postToCompany(ResponseUpgrade response) {
 		// First need to get instance of the company and den send the post accordingly
 		switch (response.getcompanyName().toString()) {
 		case "companyA":
-			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
-				ServiceInstance serviceInstance = instances.get(0);
-				String baseUrl = serviceInstance.getUri().toString();
-				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
-				System.out.println(response1.getStatusCodeValue());
-				break;
-			} catch (Exception e) {
-				System.out.println("Either the company is not active or is Unregistered");
-				break;
-			}
+			
 		case "companyB":
 			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
-				ServiceInstance serviceInstance = instances.get(0);
-				String baseUrl = serviceInstance.getUri().toString();
-				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
-				System.out.println(response1.getStatusCodeValue());
-				break;
+				
 			} catch (Exception e) {
 				System.out.println("Either the company is not active or is Unregistered");
 				break;
@@ -183,9 +174,9 @@ public class TestControllerStock {
 		 * new RestTemplate().postForEntity(url, response, String.class);
 		 * System.out.println(response1.getStatusCodeValue()); } catch (Exception e) {
 		 * System.out.println("Either the company is not active or is Unregistered"); }
-		 */
+		 *
 
-	}
+	}*/
 
 	private void postToBank(ResponseUpgrade response) {
 		List<ServiceInstance> instances = discoveryClient.getInstances("bank");
