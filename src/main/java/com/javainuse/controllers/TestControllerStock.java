@@ -42,7 +42,7 @@ public class TestControllerStock {
 			PreparedStatement stmt = connection.prepareStatement("select * from stockprice");
 			ResultSet rs = (ResultSet) stmt.executeQuery();
 			while (rs.next()) {
-				json.put("stockName",rs.getString(2));
+				json.put("stockName", rs.getString(2));
 				json.put("stockPrice", rs.getString(3));
 				System.out.println(json);
 				allStocks.add(json.toString());
@@ -56,13 +56,13 @@ public class TestControllerStock {
 		responseHeaders.set("Access-Control-Allow-Origin", "*");
 		System.out.println("I am here");
 		return new ResponseEntity<List<String>>(allStocks, responseHeaders, HttpStatus.OK);
-//		return json.toString();
+		// return json.toString();
 	}
 
 	@RequestMapping(value = "/stockMarket", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ResponseUpgrade> update(@RequestBody ArrayList<ResponseUpgrade> response) {
 		if (response != null) {
-			for(int i=0;i<response.size();i++) {
+			for (int i = 0; i < response.size(); i++) {
 				System.out.println("Inhere");
 				jdbcConnection jdbc = new jdbcConnection();
 				Connection conn = jdbc.startConnection();
@@ -91,7 +91,6 @@ public class TestControllerStock {
 					System.out.println("Error in connection with company");
 				}
 			}
-
 
 		}
 		return new ResponseEntity<ResponseUpgrade>(HttpStatus.OK);
@@ -139,6 +138,30 @@ public class TestControllerStock {
 				break;
 			}
 		case "companyD":
+			try {
+				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
+				ServiceInstance serviceInstance = instances.get(0);
+				String baseUrl = serviceInstance.getUri().toString();
+				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
+				System.out.println(response1.getStatusCodeValue());
+				break;
+			} catch (Exception e) {
+				System.out.println("Either the company is not active or is Unregistered");
+				break;
+			}
+		case "companyE":
+			try {
+				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
+				ServiceInstance serviceInstance = instances.get(0);
+				String baseUrl = serviceInstance.getUri().toString();
+				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
+				System.out.println(response1.getStatusCodeValue());
+				break;
+			} catch (Exception e) {
+				System.out.println("Either the company is not active or is Unregistered");
+				break;
+			}
+		case "companyF":
 			try {
 				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
 				ServiceInstance serviceInstance = instances.get(0);

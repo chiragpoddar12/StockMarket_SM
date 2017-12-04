@@ -6,9 +6,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class SpringBootHelloWorldApplication {
+public class StockServer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootHelloWorldApplication.class, args);
+		SpringApplication.run(StockServer.class, args);
 	}
 }
