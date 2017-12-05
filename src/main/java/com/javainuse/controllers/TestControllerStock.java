@@ -90,8 +90,9 @@ public class TestControllerStock {
 					List<ServiceInstance> instances = discoveryClient.getInstances(response.get(i).getcompanyName().toString());
 					ServiceInstance serviceInstance = instances.get(0);
 					String baseUrl = serviceInstance.getUri().toString();
+					System.out.println(baseUrl);
 					ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
-					//System.out.println(response1.getStatusCodeValue());
+					System.out.println(response1.getStatusCodeValue());
 					
 				} catch (Exception e) {
 					System.out.println("Error in connection with company");
