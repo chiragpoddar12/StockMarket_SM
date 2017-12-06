@@ -8,6 +8,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpEntity;
@@ -31,6 +32,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class TestControllerStock {
 
+	@Autowired
 	private DiscoveryClient discoveryClient;
 	
 	@RequestMapping(value = "/stockUpdates", method = RequestMethod.GET, produces = "application/json")
@@ -85,6 +87,7 @@ public class TestControllerStock {
 
 				} catch (Exception e) {
 					System.out.println("Error in connection with bank");
+					e.printStackTrace();
 				}
 				try {
 					List<ServiceInstance> instances = discoveryClient.getInstances(response.get(i).getcompanyName().toString());
@@ -180,7 +183,9 @@ public class TestControllerStock {
 	}*/
 
 	private void postToBank(ResponseUpgrade response) {
+		System.out.println("First");
 		List<ServiceInstance> instances = discoveryClient.getInstances("bank");
+		System.out.println("HERE " +instances);
 		ServiceInstance serviceInstance = instances.get(0);
 		String baseUrl = serviceInstance.getUri().toString();
 		ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
