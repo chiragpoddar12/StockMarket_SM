@@ -51,14 +51,13 @@ public class TestControllerStock {
 				System.out.println(json);
 				allStocks.add(json.toString());
 			}
-
+			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.set("Access-Control-Allow-Origin", "*");
-		System.out.println("I am here");
 		return new ResponseEntity<List<String>>(allStocks, responseHeaders, HttpStatus.OK);
 		// return json.toString();
 	}
@@ -78,6 +77,7 @@ public class TestControllerStock {
 
 					int j = stmt.executeUpdate();
 					System.out.println(j + " records updated");
+					conn.close();
 				} catch (Exception e) {
 					System.out.println("No Such Company Found");
 				}
@@ -93,101 +93,28 @@ public class TestControllerStock {
 					List<ServiceInstance> instances = discoveryClient.getInstances(response.get(i).getcompanyName().toString());
 					ServiceInstance serviceInstance = instances.get(0);
 					String baseUrl = serviceInstance.getUri().toString();
-					System.out.println(baseUrl);
-					ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
+					baseUrl += "/"+response.get(i).getcompanyName().toString();
+					ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response.get(i), String.class);
 					System.out.println(response1.getStatusCodeValue());
 					
 				} catch (Exception e) {
 					System.out.println("Error in connection with company");
+					e.printStackTrace();
 				}
 			}
 
 		}
 		return new ResponseEntity<ResponseUpgrade>(HttpStatus.OK);
 	}
-
-	
-
-	/*private void postToCompany(ResponseUpgrade response) {
-		// First need to get instance of the company and den send the post accordingly
-		switch (response.getcompanyName().toString()) {
-		case "companyA":
-			
-		case "companyB":
-			try {
-				
-			} catch (Exception e) {
-				System.out.println("Either the company is not active or is Unregistered");
-				break;
-			}
-		case "companyC":
-			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
-				ServiceInstance serviceInstance = instances.get(0);
-				String baseUrl = serviceInstance.getUri().toString();
-				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
-				System.out.println(response1.getStatusCodeValue());
-				break;
-			} catch (Exception e) {
-				System.out.println("Either the company is not active or is Unregistered");
-				break;
-			}
-		case "companyD":
-			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
-				ServiceInstance serviceInstance = instances.get(0);
-				String baseUrl = serviceInstance.getUri().toString();
-				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
-				System.out.println(response1.getStatusCodeValue());
-				break;
-			} catch (Exception e) {
-				System.out.println("Either the company is not active or is Unregistered");
-				break;
-			}
-		case "companyE":
-			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
-				ServiceInstance serviceInstance = instances.get(0);
-				String baseUrl = serviceInstance.getUri().toString();
-				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
-				System.out.println(response1.getStatusCodeValue());
-				break;
-			} catch (Exception e) {
-				System.out.println("Either the company is not active or is Unregistered");
-				break;
-			}
-		case "companyF":
-			try {
-				List<ServiceInstance> instances = discoveryClient.getInstances(response.getcompanyName().toString());
-				ServiceInstance serviceInstance = instances.get(0);
-				String baseUrl = serviceInstance.getUri().toString();
-				ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
-				System.out.println(response1.getStatusCodeValue());
-				break;
-			} catch (Exception e) {
-				System.out.println("Either the company is not active or is Unregistered");
-				break;
-			}
-		default:
-			System.out.println("No such Company Found");
-
-		}
-		/*
-		 * try { String url = "http://localhost:8095/" +
-		 * response.getCompany_Name().toString() + "/"; ResponseEntity<?> response1 =
-		 * new RestTemplate().postForEntity(url, response, String.class);
-		 * System.out.println(response1.getStatusCodeValue()); } catch (Exception e) {
-		 * System.out.println("Either the company is not active or is Unregistered"); }
-		 *
-
-	}*/
-
 	private void postToBank(ResponseUpgrade response) {
 		System.out.println("First");
-		List<ServiceInstance> instances = discoveryClient.getInstances("bank");
+		System.out.println(discoveryClient);
+		List<ServiceInstance> instances = discoveryClient.getInstances("Bank");
 		System.out.println("HERE " +instances);
 		ServiceInstance serviceInstance = instances.get(0);
 		String baseUrl = serviceInstance.getUri().toString();
+		System.out.println(baseUrl);
+		baseUrl += "/Bank";
 		ResponseEntity<?> response1 = new RestTemplate().postForEntity(baseUrl, response, String.class);
 		System.out.println(response1.getStatusCodeValue());
 
